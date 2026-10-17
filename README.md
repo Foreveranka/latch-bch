@@ -16,7 +16,7 @@ Create a descriptor containing a sender, recipient, refund block, unique ID and 
 - `/app`: Chipnet or Mainnet payment records, wallet funding, claim, refund and export/import.
 - `/demo`: signed funding + claim/refund transactions executed against the local BCH VM. Clearly labeled simulation; no invented explorer proofs.
 - `/docs`: operation, security boundaries, recovery and build status.
-- `/pitch`: draft web pitch; not a replacement for the required Widget Factory slide template.
+- `/pitch`: web pitch with a download of the seven-slide official Widget Factory template adapted to Latch.
 
 ## Run
 
@@ -68,7 +68,7 @@ The local key file format is `{ "privateKeyHex": "..." }`. Keep it outside the r
 - Claim, refund maturity, backdated refund, wrong signer, fixed destination, fee drain, extra output and double spend tested.
 - Browser demo exercises local funding and both settlement paths.
 - **Pending:** funded Mainnet end-to-end proof, real third-party wallet end-to-end signature test, independent security review.
-- **Pending:** BLAZE submission opening, required in-event improvements, participation roll call and Telegram confirmation, final Widget Factory presentation.
+- **Pending:** BLAZE submission opening, required in-event improvements, participation roll call and Telegram confirmation, final in-event presentation updates.
 
 A link being visible, an unsigned descriptor, a local VM transaction ID and a broadcast response are not evidence of a confirmed mainnet transaction. Confirmations should be inspected in a block explorer.
 

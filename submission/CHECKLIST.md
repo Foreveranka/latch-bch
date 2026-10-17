@@ -13,9 +13,9 @@ Date: 17 October 2026. **NOT SUBMITTED**.
 - [ ] Funded Mainnet end-to-end proof.
 - [ ] Real external BCH wallet signature end-to-end validation.
 - [x] Public website deployed and verified: https://latch-bch.vercel.app (HTTP 200 and Chrome rendering).
-- [ ] Public Foreveranka/latch-bch repository created; source push and verification pending.
+- [x] Public Foreveranka/latch-bch source published and verified.
 - [x] Hacker registration confirmed on DoraHacks. Visible Congratulations / successfully registered; proof saved on Desktop/Latch-BCH-BLAZE/Kayit-Onayi.png.
-- [ ] Required Widget Factory presentation completed from organizer template.
+- [x] Seven-slide editable Widget Factory presentation adapted, rendered and structurally verified; public/pitch-deck.pptx.
 - [ ] At least one preparation stream attended and roll call recorded by Mete.
 - [ ] Mete confirmed real participation in official Telegram group.
 - [ ] Pre-event source/demo baseline frozen and linked.

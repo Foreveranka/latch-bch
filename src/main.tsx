@@ -120,7 +120,8 @@ function EventBanner() {
         <i /> BCH BLAZE 2026 · pre-hackathon prototype, 17 Oct
       </span>
       <div>
-        <a href="/pitch">Pitch ↗</a>
+        <a href="/pitch-deck.pptx">Pitch deck ↗</a>
+        <a href={`${REPO}/tree/pre-event-2026-10-17`}>17 Oct baseline ↗</a>
         <a href={REPO}>Source ↗</a>
         <button title={PRIZE} onClick={() => copy(PRIZE)}>
           EMBER address <Copy size={11} />
@@ -458,16 +459,22 @@ function PaymentApp({
     if (connected) setSender(connected);
   }, [connected]);
   useEffect(() => {
-    if (location.hash.startsWith("#p=")) {
+    const loadShared = () => {
+      if (!location.hash.startsWith("#p=")) return;
       try {
         const p = unpackPayment(location.hash.slice(3));
         save(p);
         setNetwork(p.network);
         setTab("record");
+        setUtxos(null);
+        setError("");
       } catch (e) {
         setError((e as Error).message);
       }
-    }
+    };
+    loadShared();
+    window.addEventListener("hashchange", loadShared);
+    return () => window.removeEventListener("hashchange", loadShared);
   }, []);
   useEffect(() => {
     setHeight(undefined);
@@ -1440,6 +1447,9 @@ function Pitch() {
   return (
     <main className="document">
       <div className="eyebrow">LATCH · PRODUCT PITCH</div>
+      <a className="btn" href="/pitch-deck.pptx">
+        Download the Widget Factory presentation <Download size={16} />
+      </a>
       <h1>
         A way back for
         <br />
@@ -1479,7 +1489,7 @@ function Pitch() {
         ],
         [
           "08 · BCH BLAZE disclosure",
-          "Built 17 October 2026, before the build window. Baseline disclosed. This web pitch is a draft; the required Widget Factory presentation, attendance, Telegram confirmation and funded mainnet proof are still pending.",
+          "Built 17 October 2026, before the build window. Baseline disclosed. This web pitch is a draft; the Widget Factory deck is available in the top banner. Attendance, Telegram confirmation, in-event improvements and funded mainnet proof are still pending.",
         ],
       ].map(([h, p]) => (
         <section className="pitch-card" key={h}>
@@ -1496,7 +1506,7 @@ function Pitch() {
 function App() {
   const w = useWallet();
   const [modal, setModal] = useState(false);
-  const path = location.pathname;
+  const path = location.pathname.replace(/\/+$/, "") || "/";
   return (
     <>
       <Header w={w} onConnect={() => setModal(true)} />
