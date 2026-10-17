@@ -1,0 +1,6 @@
+.build
+.codex-finalizer
+.git
+node_modules
+.env*
+submission/Widget-Factory-Template.pptx

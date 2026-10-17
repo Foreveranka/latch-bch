@@ -1,0 +1,100 @@
+{
+  "contractName": "Latch",
+  "constructorInputs": [
+    {
+      "name": "sender",
+      "type": "bytes20"
+    },
+    {
+      "name": "recipient",
+      "type": "bytes20"
+    },
+    {
+      "name": "refundHeight",
+      "type": "int"
+    },
+    {
+      "name": "paymentId",
+      "type": "bytes32"
+    }
+  ],
+  "abi": [
+    {
+      "name": "spend",
+      "inputs": [
+        {
+          "name": "key",
+          "type": "pubkey"
+        },
+        {
+          "name": "signature",
+          "type": "sig"
+        },
+        {
+          "name": "refund",
+          "type": "bool"
+        }
+      ]
+    }
+  ],
+  "bytecode": "OP_6 OP_ROLL OP_0NOTEQUAL OP_4 OP_ROLL 0000000000000000000000000000000000000000000000000000000000000000 OP_EQUAL OP_NOT OP_VERIFY OP_TXINPUTCOUNT OP_1 OP_NUMEQUALVERIFY OP_TXOUTPUTCOUNT OP_1 OP_NUMEQUALVERIFY OP_0 OP_UTXOTOKENCATEGORY OP_0 OP_EQUALVERIFY OP_0 OP_OUTPUTTOKENCATEGORY OP_0 OP_EQUALVERIFY OP_ROT OP_SWAP OP_IF OP_2 OP_PICK OP_CHECKLOCKTIMEVERIFY OP_DROP OP_OVER OP_NIP OP_ENDIF OP_3 OP_PICK OP_HASH160 OP_OVER OP_EQUALVERIFY OP_4 OP_ROLL OP_4 OP_ROLL OP_CHECKSIGVERIFY OP_0 OP_OUTPUTBYTECODE 76a914 OP_ROT OP_CAT 88ac OP_CAT OP_EQUALVERIFY OP_0 OP_OUTPUTVALUE OP_0 OP_UTXOVALUE e803 OP_SUB OP_GREATERTHANOREQUAL OP_NIP OP_NIP",
+  "source": "pragma cashscript ^0.14.0;\n\n// BCH-only, one UTXO per spend, bounded fee, fixed beneficiary on each branch.\n// Recipient can claim until the UTXO is spent. Refund maturity does not cancel claim.\ncontract Latch(bytes20 sender, bytes20 recipient, int refundHeight, bytes32 paymentId) {\n    function spend(pubkey key, sig signature, bool refund) {\n        require(paymentId != 0x0000000000000000000000000000000000000000000000000000000000000000);\n        require(tx.inputs.length == 1);\n        require(tx.outputs.length == 1);\n        require(tx.inputs[0].tokenCategory == 0x);\n        require(tx.outputs[0].tokenCategory == 0x);\n        bytes20 beneficiary = recipient;\n        if (refund) {\n            require(tx.time >= refundHeight);\n            beneficiary = sender;\n        }\n        require(hash160(key) == beneficiary);\n        require(checkSig(signature, key));\n        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(beneficiary));\n        require(tx.outputs[0].value >= tx.inputs[0].value - 1000);\n    }\n}\n",
+  "fingerprint": "43887fd1d16da8ac196ca57507173fa520776f02a67ba016077d07e9c8e1abac",
+  "debug": {
+    "bytecode": "567a92547a200000000000000000000000000000000000000000000000000000000000000000879169c3519dc4519d00ce008800d100887b7c635279b1757877685379a97888547a547aad00cd0376a9147b7e0288ac7e8800cc00c602e80394a27777",
+    "sourceMap": "6:46:6:57;;;7:16:7:25;;:29::95;:16:::1;;:8::97;8:16:8:32:0;:36::37;:8::39:1;9:16:9:33:0;:37::38;:8::40:1;10:26:10:27:0;:16::42:1;:46::48:0;:8::50:1;11:27:11:28:0;:16::43:1;:47::49:0;:8::51:1;12:30:12:39:0;13:12:13:18;:20:16:9;14:31:14:43;;:12::45:1;;15:26:15:32:0;:12::33:1;13:20:16:9;17:24:17:27:0;;:16::28:1;:32::43:0;:8::45:1;18:25:18:34:0;;:36::39;;:8::42:1;19:27:19:28:0;:16::45:1;:49::86:0;:74::85;:49::86:1;;;:8::88;20:27:20:28:0;:16::35:1;:49::50:0;:39::57:1;:60::64:0;:39:::1;:8::66;6:59:21:5;",
+    "logs": [],
+    "requires": [
+      {
+        "ip": 12,
+        "line": 7
+      },
+      {
+        "ip": 15,
+        "line": 8
+      },
+      {
+        "ip": 18,
+        "line": 9
+      },
+      {
+        "ip": 22,
+        "line": 10
+      },
+      {
+        "ip": 26,
+        "line": 11
+      },
+      {
+        "ip": 32,
+        "line": 14
+      },
+      {
+        "ip": 41,
+        "line": 17
+      },
+      {
+        "ip": 46,
+        "line": 18
+      },
+      {
+        "ip": 54,
+        "line": 19
+      },
+      {
+        "ip": 62,
+        "line": 20
+      }
+    ],
+    "sourceTags": "0:2:pv;58:59:sc"
+  },
+  "compiler": {
+    "name": "cashc",
+    "version": "0.14.0",
+    "options": {
+      "enforceFunctionParameterTypes": true,
+      "enforceLocktimeGuard": true
+    }
+  },
+  "updatedAt": "2026-10-17T00:38:23.126Z"
+}

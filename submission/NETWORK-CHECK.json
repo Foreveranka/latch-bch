@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-17",
+  "networks": [
+    {
+      "network": "mainnet",
+      "height": 973204,
+      "technicalWalletSatoshis": "0"
+    },
+    {
+      "network": "chipnet",
+      "height": 328198,
+      "technicalWalletSatoshis": "0"
+    }
+  ],
+  "meaning": "Live network connectivity and wallet balance check only; not a funded payment proof."
+}

@@ -1,0 +1,22 @@
+pragma cashscript ^0.14.0;
+
+// BCH-only, one UTXO per spend, bounded fee, fixed beneficiary on each branch.
+// Recipient can claim until the UTXO is spent. Refund maturity does not cancel claim.
+contract Latch(bytes20 sender, bytes20 recipient, int refundHeight, bytes32 paymentId) {
+    function spend(pubkey key, sig signature, bool refund) {
+        require(paymentId != 0x0000000000000000000000000000000000000000000000000000000000000000);
+        require(tx.inputs.length == 1);
+        require(tx.outputs.length == 1);
+        require(tx.inputs[0].tokenCategory == 0x);
+        require(tx.outputs[0].tokenCategory == 0x);
+        bytes20 beneficiary = recipient;
+        if (refund) {
+            require(tx.time >= refundHeight);
+            beneficiary = sender;
+        }
+        require(hash160(key) == beneficiary);
+        require(checkSig(signature, key));
+        require(tx.outputs[0].lockingBytecode == new LockingBytecodeP2PKH(beneficiary));
+        require(tx.outputs[0].value >= tx.inputs[0].value - 1000);
+    }
+}
